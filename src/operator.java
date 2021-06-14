@@ -16,10 +16,10 @@ public class operator extends JPanel {
         minus = new JButton("-");
         multi = new JButton("*");
         divide = new JButton("/");
-        calcualtor.changeFont(plus);
-        calcualtor.changeFont(minus);
-        calcualtor.changeFont(divide);
-        calcualtor.changeFont(multi);
+        calculator.changeFont(plus);
+        calculator.changeFont(minus);
+        calculator.changeFont(divide);
+        calculator.changeFont(multi);
         setPreferredSize(new Dimension(45, 200));
         setLayout(new GridLayout(4, 1));
         add(plus);
@@ -35,15 +35,15 @@ public class operator extends JPanel {
     private class listner implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            calcualtor.flag = true;
+            calculator.secondNumber = true;
             if (e.getSource() == plus)
-                calcualtor.op = op_numbers.plus;
+                calculator.op = op_numbers.plus;
             else if (e.getSource() == minus)
-                calcualtor.op = op_numbers.minus;
+                calculator.op = op_numbers.minus;
             else if (e.getSource() == multi)
-                calcualtor.op = op_numbers.multi;
+                calculator.op = op_numbers.multi;
             else
-                calcualtor.op = op_numbers.divide;
+                calculator.op = op_numbers.divide;
         }
     }
 }

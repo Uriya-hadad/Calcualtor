@@ -12,7 +12,7 @@ public class MainButtons extends JPanel {
         result = new JLabel("---");
         result.setFont(new Font("arial",Font.BOLD, 15));
         resultLabel.add(result);
-        buttons.add(new calcualtor());
+        buttons.add(new calculator());
         buttons.add(new operator());
         add(resultLabel);
         add(buttons);

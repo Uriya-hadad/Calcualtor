@@ -3,16 +3,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class calcualtor extends JPanel {
-    static boolean flag = false;
-    static double number1 = 0, number2 = 0;
-    static boolean dotOn = false;
+public class calculator extends JPanel {
+    static boolean secondNumber = false;
+    static String number1 = "0", number2 = "0";
     JButton[] numbers = new JButton[10];
     JButton dot = new JButton(".");
     static JButton equal = new JButton("=");
     static operator.op_numbers op = null;
 
-    public calcualtor() {
+    public calculator() {
         changeFont(equal);
         setLayout(new GridLayout(4, 3));
         setPreferredSize(new Dimension(140, 200));
@@ -22,22 +21,41 @@ public class calcualtor extends JPanel {
             add(numbers[i]);
         }
         add(dot);
-        dot.addActionListener((e) -> dotOn = true);
+        dot.addActionListener(new dotListener());
         add(equal);
-        equal.addActionListener(new operatorListener());
+        equal.addActionListener(new equalListener());
     }
 
+
+    private static class dotListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (!secondNumber) {
+                number1 += ".";
+                MainButtons.result.setText(number1);
+            }
+            else {
+                number2 += ".";
+                MainButtons.result.setText(number2);
+            }
+        }
+    }
     private static class NumbersListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (!flag) {
-                number1 *= 10;
-                number1 += Integer.parseInt(((JButton) e.getSource()).getText());
-                MainButtons.result.setText(Double.toString(number1));
+            int numberChosen = Integer.parseInt(((JButton) e.getSource()).getText());
+            if (!secondNumber) {
+                //deleting the zero number for writing new one
+                if (number1.equals("0"))
+                    number1 = "";
+                number1 += numberChosen;
+                MainButtons.result.setText(number1);
             } else {
-                number2 *= 10;
-                number2 += Integer.parseInt(((JButton) e.getSource()).getText());
-                MainButtons.result.setText(Double.toString(number2));
+                //deleting the zero number for writing new one
+                if (number2.equals("0"))
+                    number2 = "";
+                number2 += numberChosen;
+                MainButtons.result.setText(number2);
             }
 
         }
@@ -49,35 +67,37 @@ public class calcualtor extends JPanel {
         button.setFont(new Font("Arial", Font.BOLD, 18));
     }
 
-    private static class operatorListener implements ActionListener {
+    private static class equalListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            double number1Value = Double.parseDouble(number1),
+                    number2Value = Double.parseDouble(number2);
             switch (op) {
                 case divide -> {
-                    if (number2 != 0) {
-                        operator.result += calcualtor.number1 / calcualtor.number2;
+                    if (number2Value != 0) {
+                        operator.result += number1Value / number2Value;
                         MainButtons.result.setText(Double.toString(operator.result));
                     } else {
                         MainButtons.result.setText("Nan");
                     }
                 }
                 case plus -> {
-                    operator.result += calcualtor.number1 + calcualtor.number2;
+                    operator.result += number1Value + number2Value;
                     MainButtons.result.setText(Double.toString(operator.result));
                 }
                 case minus -> {
-                    operator.result += calcualtor.number1 - calcualtor.number2;
+                    operator.result += number1Value - number2Value;
                     MainButtons.result.setText(Double.toString(operator.result));
                 }
                 case multi -> {
-                    operator.result += calcualtor.number1 * calcualtor.number2;
+                    operator.result += number1Value * number2Value;
                     MainButtons.result.setText(Double.toString(operator.result));
                 }
                 default -> MainButtons.result.setText("Nan");
             }
-            number1 = 0;
-            number2 = 0;
-            flag = false;
+            number1 = "0";
+            number2 = "0";
+            secondNumber = false;
             operator.result = 0;
         }
     }
